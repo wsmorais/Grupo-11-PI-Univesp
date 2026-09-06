@@ -96,7 +96,7 @@ DATABASES = {
         'USER': 'postgres',
         'PASSWORD': 'K*u/bBC%CNRX-@9',
         'HOST': 'db.fwbpwpruuomvskxrhhlt.supabase.co',
-        'PORT': '5432',
+        'PORT': '6543',
         'OPTIONS': {
             'sslmode': 'require',  # <-- Adicione esta linha
         },
