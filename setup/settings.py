@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 # pylint: disable=invalid-name
 
 from pathlib import Path
+import dj_database_url
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -80,16 +82,14 @@ WSGI_APPLICATION = 'setup.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'voluntariohub_db',
-        'USER': 'root',          # Seu usuário do MySQL
-        'PASSWORD': '',  # Sua senha do MySQL
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
-
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'K*u/bBC%CNRX-@9',  # Cole a senha exatamente como criou
+        'HOST': 'db.fwbpwpruuomvskxrhhlt.supabase.co',
+        'PORT': '5432',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/6.1/ref/settings/#auth-password-validators
