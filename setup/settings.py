@@ -40,6 +40,7 @@ ALLOWED_HOSTS = [
     'otede.com.br',
     'www.otede.com.br',
     '.onrender.com',
+    '*',  # Aceita todas as requisições temporariamente para testes
 ]
 
 # Application definition
