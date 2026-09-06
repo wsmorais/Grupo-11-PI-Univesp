@@ -55,13 +55,14 @@ INSTALLED_APPS = [
     ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # <-- Adicione esta linha
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # <-- Adicione esta linha
+    
 ]
 
 ROOT_URLCONF = 'setup.urls'
@@ -92,12 +93,14 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'postgres',
         'USER': 'postgres',
-        'PASSWORD': 'K*u/bBC%CNRX-@9',  # Cole a senha exatamente como criou
+        'PASSWORD': 'K*u/bBC%CNRX-@9',
         'HOST': 'db.fwbpwpruuomvskxrhhlt.supabase.co',
         'PORT': '5432',
+        'OPTIONS': {
+            'sslmode': 'require',  # <-- Adicione esta linha
+        },
     }
 }
-
 # Password validation
 # https://docs.djangoproject.com/en/6.1/ref/settings/#auth-password-validators
 
