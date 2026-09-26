@@ -85,7 +85,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'postgres',
         'USER': 'postgres',
-        'PASSWORD': 'K*u/bBC%CNRX-@9',  # Cole a senha exatamente como criou
+        'PASSWORD': '6CohvviOH5gRsvc1',  # Cole a senha exatamente como criou
         'HOST': 'db.fwbpwpruuomvskxrhhlt.supabase.co',
         'PORT': '5432',
     }
