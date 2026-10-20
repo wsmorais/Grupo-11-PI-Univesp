@@ -1,0 +1,54 @@
+{% extends "core/base.html" %}
+{% load bootstrap4 %}
+
+
+{% block title %}Cadastrar Voluntário{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Coluna do formulário -->
+    <div class="col-md-6">
+        <h2>Fale com uma ONG</h2>
+        <form method="post" action="{% url 'cadastrar_voluntario' %}" class="d-flex flex-column gap-4">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            <button type="submit" class="btn btn-success">Enviar candidatura</button>
+        </form>
+    </div>
+
+    <!-- Coluna do passo a passo -->
+    <div class="col-md-6">
+        <h1 class="mb-4">Para Voluntários</h1>
+        <h2 class="mb-4">Como funciona?</h2>
+        <div class="d-flex align-items-start mb-4">
+            <span class="badge bg-success rounded-circle me-3 p-3">01</span>
+            <div>
+                <h5>Crie seu perfil</h5>
+                <p>Informe suas habilidades, disponibilidade de horário e causas que te movem.</p>
+            </div>
+        </div>
+        <div class="d-flex align-items-start mb-4">
+            <span class="badge bg-success rounded-circle me-3 p-3">02</span>
+            <div>
+                <h5>Explore oportunidades</h5>
+                <p>Navegue por vagas filtradas pela sua cidade, área de atuação ou formato.</p>
+            </div>
+        </div>
+        <div class="d-flex align-items-start mb-4">
+            <span class="badge bg-success rounded-circle me-3 p-3">03</span>
+            <div>
+                <h5>Candidate-se e conecte</h5>
+                <p>Envie sua candidatura e converse diretamente com a ONG pelo nosso sistema.</p>
+            </div>
+        </div>
+        <div class="d-flex align-items-start mb-4">
+            <span class="badge bg-success rounded-circle me-3 p-3">04</span>
+            <div>
+                <h5>Acompanhe seu impacto</h5>
+                <p>Veja as horas doadas, avaliações e o impacto gerado pelas suas ações.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
