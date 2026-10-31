@@ -12,4 +12,6 @@ urlpatterns = [
     path('oportunidades/<int:vaga_id>/inscrever/', views.inscrever_oportunidade, name='inscrever_oportunidade'),
     path('ong/editar/', views.editar_perfil_ong, name='editar_perfil_ong'),
     path('minhas-oportunidades/', views.minhas_oportunidades, name='minhas_oportunidades'),
+    path('historias/', views.historias, name='historias'),
+    path('oportunidades/', views.listar_oportunidades, name='listar_oportunidades'),
 ]

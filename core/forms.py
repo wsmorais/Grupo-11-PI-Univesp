@@ -1,4 +1,5 @@
 from django import forms
+from .models import Depoimento
 from django.contrib.auth.models import User
 from .models import Perfil, Oportunidade
 
@@ -52,4 +53,24 @@ class OportunidadeForm(forms.ModelForm):
             'descricao': forms.Textarea(attrs={'class': 'form-control', 'rows': 4, 'placeholder': 'Descreva as atividades...'}),
             'local': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ex: São Paulo - SP'}),
             'urgente': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        }
+
+class DepoimentoForm(forms.ModelForm):
+    class Meta:
+        model = Depoimento
+        fields = ['texto', 'cargo_subtitulo', 'foto_url']
+        widgets = {
+            'texto': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 4,
+                'placeholder': 'Conte como foi sua experiência como voluntário...'
+            }),
+            'cargo_subtitulo': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Ex: Voluntário há 2 anos'
+            }),
+            'foto_url': forms.URLInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'URL da foto (opcional)'
+            }),
         }

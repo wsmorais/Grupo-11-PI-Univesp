@@ -3,6 +3,8 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from .models import Depoimento
+from .forms import DepoimentoForm
 
 from .models import Oportunidade, Depoimento, Perfil
 from .forms import CadastroVoluntarioForm, CadastroONGForm, OportunidadeForm
@@ -188,3 +190,30 @@ def minhas_oportunidades(request):
     minhas_vagas = Oportunidade.objects.filter(ong=request.user).prefetch_related('inscritos__perfil').order_by('-data_criacao')
     
     return render(request, 'core/minhas_oportunidades.html', {'vagas': minhas_vagas})
+
+def historias(request):
+    depoimentos = Depoimento.objects.all().order_by('-id')
+    form = None
+
+    # Apenas voluntários logados podem enviar depoimento
+    if request.user.is_authenticated and hasattr(request.user, 'perfil') and request.user.perfil.tipo == 'VOLUNTARIO':
+        if request.method == 'POST':
+            form = DepoimentoForm(request.POST)
+            if form.is_valid():
+                depoimento = form.save(commit=False)
+                # Define o nome como o nome de usuário ou primeiro nome
+                depoimento.nome = request.user.first_name or request.user.username
+                depoimento.save()
+                messages.success(request, "Sua história foi publicada com sucesso!")
+                return redirect('historias')
+        else:
+            form = DepoimentoForm()
+
+    return render(request, 'core/historias.html', {
+        'depoimentos': depoimentos,
+        'form': form
+    })
+
+def listar_oportunidades(request):
+    oportunidades = Oportunidade.objects.filter(ativa=True).order_by('-data_criacao')
+    return render(request, 'core/oportunidades.html', {'oportunidades': oportunidades})

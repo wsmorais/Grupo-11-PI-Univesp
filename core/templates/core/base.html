@@ -39,8 +39,16 @@
                             <a class="nav-link nav-link-custom {% if request.resolver_match.url_name == 'listar_ongs' %}nav-link-active{% endif %}" href="{% url 'listar_ongs' %}">ONGs</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link nav-link-custom" href="{% url 'home' %}#oportunidades">Oportunidades</a>
+                            <a class="nav-link {% if request.resolver_match.url_name == 'listar_oportunidades' %}active btn btn-success text-white px-3{% endif %}" 
+                            href="{% url 'listar_oportunidades' %}">
+                                Oportunidades
+                            </a>
                         </li>
+                          <!-- ADICIONAR O LINK DE HISTÓRIAS AQUI -->
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.resolver_match.url_name == 'historias' %}active btn btn-success text-white px-3{% endif %}" href="{% url 'historias' %}">Histórias</a>
+                        </li>  
+
                     </ul>
                 </div>
 
@@ -68,6 +76,7 @@
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownCadastro">
                                 <li><a class="dropdown-item" href="{% url 'cadastrar_voluntario' %}"><i class="bi bi-person-heart me-2"></i>Sou Voluntário</a></li>
                                 <li><a class="dropdown-item" href="{% url 'cadastrar_ong' %}"><i class="bi bi-building me-2"></i>Sou uma ONG</a></li>
+                                
                             </ul>
                         </div>
                     {% endif %}
