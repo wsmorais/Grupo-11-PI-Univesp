@@ -17,36 +17,76 @@
     <header class="container py-4">
         <nav class="navbar navbar-expand-lg">
             <div class="container-fluid p-0">
-                <a class="navbar-brand d-flex align-items-center gap-2 fw-bold fs-4 text-green" href="#">
+                <a class="navbar-brand d-flex align-items-center gap-2 fw-bold fs-4 text-green" href="{% url 'home' %}">
                     <span class="bg-brand-green p-2 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
-                        <i class="bi bi-geo-alt-fill fs-6"></i>
+                        <i class="bi bi-geo-alt-fill fs-6 text-white"></i>
                     </span>
                     Voluntário<span class="text-orange">Hub</span>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+
                 <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
                     <ul class="navbar-nav align-items-center">
                         <li class="nav-item">
-                            <a class="nav-link nav-link-custom {% if request.resolver_match.url_name == 'home' %}nav-link-active{% endif %}" href="{% url 'home' %}">Início</a></li>
+                            <a class="nav-link nav-link-custom {% if request.resolver_match.url_name == 'home' %}nav-link-active{% endif %}" href="{% url 'home' %}">Início</a>
+                        </li>
                         <li class="nav-item">
-                            <a class="nav-link nav-link-custom {% if request.resolver_match.url_name == 'cadastrar_voluntario' %}nav-link-active{% endif %}" href="{% url 'cadastrar_voluntario' %}">Voluntários</a></li>
+                            <a class="nav-link nav-link-custom {% if request.resolver_match.url_name == 'cadastrar_voluntario' %}nav-link-active{% endif %}" href="{% url 'cadastrar_voluntario' %}">Voluntários</a>
+                        </li>
                         <li class="nav-item">
-                            <a class="nav-link nav-link-custom {% if request.resolver_match.url_name == 'listar_ongs' %}nav-link-active{% endif %}" href="{% url 'listar_ongs' %}">ONGs</a></li>
+                            <a class="nav-link nav-link-custom {% if request.resolver_match.url_name == 'listar_ongs' %}nav-link-active{% endif %}" href="{% url 'listar_ongs' %}">ONGs</a>
+                        </li>
                         <li class="nav-item">
-                            <a class="nav-link nav-link-custom" href="#">Oportunidades</a></li>
-                        <li class="nav-item">
-                            <a class="nav-link nav-link-custom" href="#">Histórias</a></li>
+                            <a class="nav-link nav-link-custom" href="{% url 'home' %}#oportunidades">Oportunidades</a>
+                        </li>
                     </ul>
                 </div>
+
+                <!-- Lado direito da Navbar (Autenticado vs Visitante) -->
                 <div class="d-none d-lg-flex align-items-center gap-3">
-                    <a href="/admin/" class="text-decoration-none text-dark">Entrar</a>
-                    <a href="#" class="btn btn-orange">Cadastrar-se</a>
+                    {% if user.is_authenticated %}
+                        <span class="me-3">Olá, {{ user.username }}!</span>
+                        
+                        {% if user.perfil.tipo == 'ONG' %}
+                            <a href="{% url 'editar_perfil_ong' %}" class="btn btn-outline-secondary btn-sm me-2">Editar Perfil</a>
+                            <a href="{% url 'criar_oportunidade' %}" class="btn btn-outline-success btn-sm me-2">+ Nova Vaga</a>
+                            <a href="{% url 'minhas_oportunidades' %}" class="btn btn-outline-info btn-sm me-2">Minhas Vagas</a>
+                        {% endif %}
+
+                        <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Sair</a>
+                    
+                    {% else %}
+                        <a href="{% url 'login' %}" class="text-decoration-none text-dark fw-medium">Entrar</a>
+                        
+                        <!-- Menu suspenso (Dropdown) para escolha de cadastro -->
+                        <div class="dropdown">
+                            <button class="btn btn-orange dropdown-toggle" type="button" id="dropdownCadastro" data-bs-toggle="dropdown" aria-expanded="false">
+                                Cadastrar-se
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownCadastro">
+                                <li><a class="dropdown-item" href="{% url 'cadastrar_voluntario' %}"><i class="bi bi-person-heart me-2"></i>Sou Voluntário</a></li>
+                                <li><a class="dropdown-item" href="{% url 'cadastrar_ong' %}"><i class="bi bi-building me-2"></i>Sou uma ONG</a></li>
+                            </ul>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </nav>
     </header>
+
+    <!-- Exibição de Mensagens de Alerta (Sucesso, Erro, Info) -->
+    <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
 
     <!-- Conteúdo dinâmico -->
     <main class="container py-4">

@@ -1,35 +1,50 @@
-{% extends "core/base.html" %}
-
-{% block title %}VoluntárioHub - Início{% endblock %}
+{% extends 'core/base.html' %}
+{% load static %}
 
 {% block content %}
-<main class="container py-4 mb-5">
-    <!-- Hero -->
-    <div class="row align-items-center gy-5">
-        <div class="col-lg-6">
-            <span class="text-uppercase fw-bold text-orange tracking-wider small d-block mb-2">Conectando Pessoas e Causas</span>
-            <h1 class="font-serif-title display-4 fw-bold text-green mb-3">Seu tempo pode <br>transformar vidas</h1>
-            <p class="lead text-muted mb-4 fs-6" style="max-width: 480px;">O VoluntárioHub conecta voluntários apaixonados às ONGs que mais precisam de ajuda.</p>
-            <div class="d-flex flex-wrap gap-3 mb-5">
-                <a href="{% url 'cadastrar_voluntario' %}" class="btn btn-green">Quero voluntariar</a>
-                <a href="#" class="btn btn-outline-custom">Sou uma ONG</a>
-            </div>
-            <div class="row pt-4 border-top border-secondary-subtle">
-                <div class="col-4"><div class="font-serif-title fs-3 fw-bold">2.400+</div><div class="small text-muted">Voluntários ativos</div></div>
-                <div class="col-4"><div class="font-serif-title fs-3 fw-bold">180+</div><div class="small text-muted">ONGs cadastradas</div></div>
-                <div class="col-4"><div class="font-serif-title fs-3 fw-bold">12k+</div><div class="small text-muted">Horas doadas/mês</div></div>
-            </div>
-        </div>
-
-        <div class="col-lg-6 d-flex justify-content-center position-relative">
-            <div class="position-relative rounded-4 overflow-hidden shadow-lg w-100" style="max-width: 420px;">
-                <img src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?auto=format&fit=crop&q=80&w=800" alt="Voluntário" class="w-100 object-fit-cover" style="height: 480px;">
-                <div class="position-absolute top-0 end-0 m-3 bg-brand-green p-3 rounded-3 text-center shadow">
-                    <div class="fw-bold fs-5">98%</div>
-                    <div style="font-size: 10px; opacity: 0.9;">satisfação dos voluntários</div>
-                </div>
-            </div>
+<!-- Hero Section -->
+<div class="row align-items-center py-5">
+    <div class="col-lg-6">
+        <span class="text-orange text-uppercase fw-bold fs-7 tracking-wider">Conectando Pessoas e Causas</span>
+        <h1 class="display-4 fw-bold mt-2 text-green">Seu tempo pode transformar vidas</h1>
+        <p class="lead text-muted my-4">O VoluntárioHub conecta voluntários apaixonados às ONGs que mais precisam de ajuda.</p>
+        
+        <div class="d-flex gap-3">
+            <a href="{% url 'cadastrar_voluntario' %}" class="btn btn-green px-4 py-2">Quero voluntariar</a>
+            <a href="{% url 'cadastrar_ong' %}" class="btn btn-outline-custom px-4 py-2">Sou uma ONG</a>
         </div>
     </div>
-</main>
+    <!-- ... restante da sua index.html ... -->
+</div>
+
+<!-- Lista de Oportunidades -->
+<div id="oportunidades" class="py-5">
+    <h2 class="fw-bold mb-4">Oportunidades Abertas</h2>
+    <div class="row">
+        {% for vaga in oportunidades %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        {% if vaga.urgente %}
+                            <span class="badge bg-danger mb-2">Urgente</span>
+                        {% endif %}
+                        <h5 class="card-title fw-bold">{{ vaga.titulo }}</h5>
+                        <p class="card-text text-muted">{{ vaga.descricao|truncatewords:20 }}</p>
+                        <p class="text-secondary small"><i class="bi bi-geo-alt me-1"></i>{{ vaga.local }}</p>
+                        
+                        {% if user.is_authenticated and user.perfil.tipo == 'VOLUNTARIO' %}
+                            {% if user in vaga.inscritos.all %}
+                                <a href="{% url 'inscrever_oportunidade' vaga.id %}" class="btn btn-outline-danger w-100">Cancelar Inscrição</a>
+                            {% else %}
+                                <a href="{% url 'inscrever_oportunidade' vaga.id %}" class="btn btn-success w-100">Inscrever-se</a>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p class="text-muted">Nenhuma oportunidade cadastrada no momento.</p>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}

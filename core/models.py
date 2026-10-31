@@ -6,12 +6,13 @@ class Perfil(models.Model):
         ('VOLUNTARIO', 'Voluntário'),
         ('ONG', 'ONG / Organização'),
     )
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='perfil')
     tipo = models.CharField(max_length=20, choices=TIPO_USUARIO, default='VOLUNTARIO')
     telefone = models.CharField(max_length=20, blank=True)
     cidade = models.CharField(max_length=100, blank=True)
     habilidades = models.CharField(max_length=200, blank=True)
     mensagem = models.TextField(blank=True)
+    foto = models.ImageField(upload_to='ongs/', null=True, blank=True)
 
     def __str__(self):
         nome = self.user.username if self.user else "Usuário sem conta"
@@ -36,6 +37,7 @@ class Oportunidade(models.Model):
     urgente = models.BooleanField(default=False)
     data_criacao = models.DateTimeField(auto_now_add=True)
     ativa = models.BooleanField(default=True)
+    inscritos = models.ManyToManyField(User, related_name='minhas_inscricoes', blank=True)
 
     def __str__(self):
         return str(self.titulo)

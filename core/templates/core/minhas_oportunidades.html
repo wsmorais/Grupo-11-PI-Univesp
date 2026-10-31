@@ -1,0 +1,54 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="mb-4 text-primary fw-bold">Minhas Oportunidades e Voluntários Inscritos</h2>
+
+    {% for vaga in vagas %}
+        <div class="card shadow-sm mb-4 border-0">
+            <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                <h4 class="m-0 text-dark">{{ vaga.titulo }}</h4>
+                <span class="badge bg-info text-dark">
+                    {{ vaga.inscritos.count }} Voluntário(s) inscrito(s)
+                </span>
+            </div>
+            <div class="card-body">
+                <p class="card-text">{{ vaga.descricao }}</p>
+
+                <h5 class="mt-4 mb-3 text-secondary">Voluntários Inscritos:</h5>
+                {% if vaga.inscritos.all %}
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>E-mail</th>
+                                    <th>Telefone</th>
+                                    <th>Habilidades</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for voluntario in vaga.inscritos.all %}
+                                    <tr>
+                                        <td><strong>{{ voluntario.username }}</strong></td>
+                                        <td>{{ voluntario.email }}</td>
+                                        <td>{{ voluntario.perfil.telefone|default:"Não informado" }}</td>
+                                        <td>{{ voluntario.perfil.habilidades|default:"Não informado" }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted fst-italic">Ainda não há voluntários inscritos nesta vaga.</p>
+                {% endif %}
+            </div>
+        </div>
+    {% empty %}
+        <div class="alert alert-info">
+            Você ainda não cadastrou nenhuma oportunidade. 
+            <a href="{% url 'criar_oportunidade' %}" class="alert-link">Clique aqui para criar uma.</a>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
