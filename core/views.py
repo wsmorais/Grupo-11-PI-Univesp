@@ -216,7 +216,7 @@ def editar_perfil_voluntario(request):
             perfil.save()
 
             messages.success(request, "Seu perfil foi atualizado com sucesso!")
-            return redirect('index')
+            return redirect('home')
     else:
         dados_iniciais = {
             'telefone': perfil.telefone,

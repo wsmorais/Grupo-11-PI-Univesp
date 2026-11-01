@@ -4,22 +4,36 @@ from django.contrib.auth.models import User
 from .models import Perfil, Oportunidade
 
 class CadastroVoluntarioForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput(), label="Senha")
-    confirm_password = forms.CharField(widget=forms.PasswordInput(), label="Confirme a Senha")
+    password = forms.CharField(widget=forms.PasswordInput(), label="Senha", required=False)
+    confirm_password = forms.CharField(widget=forms.PasswordInput(), label="Confirme a Senha", required=False)
     telefone = forms.CharField(max_length=20, required=False, label="Telefone")
     cidade = forms.CharField(max_length=100, required=False, label="Cidade")
     habilidades = forms.CharField(widget=forms.Textarea(attrs={'rows': 3}), required=False, label="Habilidades")
+    foto = forms.ImageField(required=False, label="Foto de Perfil")
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email', 'username']
+        fields = ['first_name', 'last_name', 'email', 'username', 'foto', 'telefone', 'cidade', 'habilidades']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Se o formulário receber uma instância (ou seja, estiver EDITANDO um perfil existente),
+        # bloqueia o campo username para alteração
+        if self.instance and self.instance.pk:
+            self.fields['username'].disabled = True
 
     def clean(self):
         cleaned_data = super().clean()
         p1 = cleaned_data.get("password")
         p2 = cleaned_data.get("confirm_password")
+        
+        # Exige validação de senha apenas no cadastro (quando for um novo usuário)
+        if not self.instance.pk and (not p1 or not p2):
+            raise forms.ValidationError("Informe e confirme a senha.")
+
         if p1 and p2 and p1 != p2:
             raise forms.ValidationError("As senhas não coincidem.")
+            
         return cleaned_data
 
 
