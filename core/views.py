@@ -189,6 +189,46 @@ def editar_perfil_ong(request):
 
     return render(request, 'core/editar_perfil_ong.html', {'form': form})
 
+@login_required
+def editar_perfil_voluntario(request):
+    perfil = get_object_or_404(Perfil, user=request.user, tipo='VOLUNTARIO')
+
+    if request.method == 'POST':
+        form = CadastroVoluntarioForm(request.POST, request.FILES, instance=request.user)
+        form.fields['password'].required = False
+        if 'confirm_password' in form.fields:
+            form.fields['confirm_password'].required = False
+
+        if form.is_valid():
+            user = form.save(commit=False)
+            nova_senha = form.cleaned_data.get('password')
+            if nova_senha:
+                user.set_password(nova_senha)
+            user.save()
+
+            perfil.telefone = form.cleaned_data.get('telefone', perfil.telefone)
+            perfil.cidade = form.cleaned_data.get('cidade', perfil.cidade)
+            perfil.habilidades = form.cleaned_data.get('habilidades', perfil.habilidades)
+            
+            if request.FILES.get('foto'):
+                perfil.foto = request.FILES['foto']
+                
+            perfil.save()
+
+            messages.success(request, "Seu perfil foi atualizado com sucesso!")
+            return redirect('index')
+    else:
+        dados_iniciais = {
+            'telefone': perfil.telefone,
+            'cidade': perfil.cidade,
+            'habilidades': perfil.habilidades,
+        }
+        form = CadastroVoluntarioForm(instance=request.user, initial=dados_iniciais)
+        form.fields['password'].required = False
+        if 'confirm_password' in form.fields:
+            form.fields['confirm_password'].required = False
+
+    return render(request, 'core/editar_perfil_voluntario.html', {'form': form})
 
 # ==========================================
 # GESTÃO DE OPORTUNIDADES & INSCRIÇÕES

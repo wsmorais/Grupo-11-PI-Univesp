@@ -52,11 +52,14 @@
                     {% if user.is_authenticated %}
                         <span class="me-3">Olá, <strong>{{ user.username }}</strong>!</span>
                         
-                        <!-- Exibe opções exclusivas para perfil ONG (maiúsculo ou minúsculo) -->
                         {% if user.perfil.tipo|upper == 'ONG' %}
+                            <!-- Opções exclusivas para Perfil ONG -->
                             <a href="{% url 'editar_perfil_ong' %}" class="btn btn-outline-secondary btn-sm me-2">Editar Perfil</a>
                             <a href="{% url 'criar_oportunidade' %}" class="btn btn-outline-success btn-sm me-2">+ Nova Vaga</a>
                             <a href="{% url 'minhas_oportunidades' %}" class="btn btn-outline-info btn-sm me-2">Minhas Vagas</a>
+                        {% else %}
+                            <!-- Opção exclusiva para Perfil Voluntário -->
+                            <a href="{% url 'editar_perfil_voluntario' %}" class="btn btn-outline-secondary btn-sm me-2">Editar Perfil</a>
                         {% endif %}
 
                         <a href="{% url 'logout_usuario' %}" class="btn btn-outline-danger btn-sm">Sair</a>

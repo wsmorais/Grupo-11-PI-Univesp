@@ -15,8 +15,12 @@ urlpatterns = [
 
     path('cadastrar/voluntario/', views.cadastrar_voluntario, name='cadastrar_voluntario'),
     path('cadastrar/ong/', views.cadastrar_ong, name='cadastrar_ong'),
-    path('perfil/ong/editar/', views.editar_perfil_ong, name='editar_perfil_ong'),
     
+    # Perfis
+    path('perfil/ong/editar/', views.editar_perfil_ong, name='editar_perfil_ong'),
+    path('perfil/voluntario/editar/', views.editar_perfil_voluntario, name='editar_perfil_voluntario'),  # ROTA ADICIONADA
+
+    # Oportunidades
     path('oportunidades/nova/', views.criar_oportunidade, name='criar_oportunidade'),
     path('oportunidades/minhas/', views.minhas_oportunidades, name='minhas_oportunidades'),
     path('oportunidades/<int:vaga_id>/inscrever/', views.inscrever_oportunidade, name='inscrever_oportunidade'),
