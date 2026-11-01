@@ -86,20 +86,19 @@ TEMPLATES = [
 WSGI_APPLICATION = 'setup.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/6.1/ref/settings/#databases
+# Lê a variável de ambiente DATABASE_URL do Render (ou usa o Supabase diretamente)
+DATABASE_URL = os.getenv(
+    'DATABASE_URL',
+    'postgresql://postgres.fwbpwpruuomvskxrhhlt:6CohvviOH5gRsvc1@aws-0-sa-east-1.pooler.supabase.com:6543/postgres'
+)
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': '6CohvviOH5gRsvc1',  # Cole a senha exatamente como criou
-        'HOST': 'db.fwbpwpruuomvskxrhhlt.supabase.co',
-        'PORT': '5432',
-    }
+    'default': dj_database_url.parse(
+        DATABASE_URL,
+        conn_max_age=600,
+        ssl_require=True
+    )
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/6.1/ref/settings/#auth-password-validators
