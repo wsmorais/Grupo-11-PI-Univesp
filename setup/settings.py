@@ -52,9 +52,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'core',
     'bootstrap4',
-
-
-
     ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -131,12 +128,6 @@ TIME_ZONE = 'America/Sao_Paulo'
 USE_I18N = True
 
 USE_TZ = True
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/6.1/howto/static-files/
-
-STATIC_URL = 'static/'
 
 
 # Email
