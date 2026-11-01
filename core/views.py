@@ -43,6 +43,17 @@ def historias(request):
             if form.is_valid():
                 depoimento = form.save(commit=False)
                 depoimento.nome = request.user.get_full_name() or request.user.username
+                
+                # ATRIBUI A FOTO DO PERFIL AUTOMATICAMENTE
+                perfil = request.user.perfil
+                if perfil.foto:
+                    # Se o modelo Depoimento usa foto_url (campo texto/URL)
+                    depoimento.foto_url = perfil.foto.url
+                    
+                    # NOTA: Caso o modelo Depoimento use ImageField chamado 'foto', 
+                    # use a linha abaixo em vez de foto_url:
+                    # depoimento.foto = perfil.foto
+
                 depoimento.save()
                 messages.success(request, "Sua história foi publicada com sucesso!")
                 return redirect('historias')
