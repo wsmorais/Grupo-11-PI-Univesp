@@ -15,25 +15,23 @@ from pathlib import Path
 import dj_database_url
 import os
 from dotenv import load_dotenv
+
 # Carrega as variáveis do ficheiro .env
 load_dotenv()
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/6.1/howto/static-files/
+# 1. BASE_DIR É DEFINIDO AQUI PRIMEIRO:
+BASE_DIR = Path(__file__).resolve().parent.parent
 
+# 2. AGORA VOCÊ PODE USAR O BASE_DIR:
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'core' / 'static',
 ]
 
-# ESTA LINHA É OBRIGATÓRIA PARA O RENDER:
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# Configuração para o WhiteNoise servir os estáticos comprimidos em produção:
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
