@@ -1,0 +1,93 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <span class="text-uppercase text-danger fw-bold small tracking-wide">Histórias Reais</span>
+            <h1 class="display-5 fw-bold text-dark mt-1">Quem já transformou</h1>
+        </div>
+
+        {# Botão para abrir o modal de cadastro (apenas para voluntários) #}
+        {% if user.is_authenticated and user.perfil.tipo == 'VOLUNTARIO' %}
+            <button type="button" class="btn btn-success fw-semibold" data-bs-toggle="modal" data-bs-target="#modalDepoimento">
+                + Contar Minha História
+            </button>
+        {% endif %}
+    </div>
+
+    {# MODAL COM O FORMULÁRIO #}
+    {% if form %}
+    <div class="modal fade" id="modalDepoimento" tabindex="-1" aria-labelledby="modalDepoimentoLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content rounded-3">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title fw-bold text-primary" id="modalDepoimentoLabel">Compartilhe sua História</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Seu Depoimento</label>
+                            {{ form.texto }}
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Subtítulo / Tempo de Voluntariado</label>
+                            {{ form.cargo_subtitulo }}
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">URL da sua Foto (opcional)</label>
+                            {{ form.foto_url }}
+                        </div>
+                    </div>
+                    <div class="modal-footer border-0">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-success fw-semibold">Publicar História</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {# CARDS DE DEPOIMENTOS #}
+    <div class="row g-4 mt-2">
+        {% for item in depoimentos %}
+            <div class="col-md-4">
+                <div class="card h-100 border-0 rounded-4 shadow-sm p-3 bg-white">
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <p class="card-text text-dark fs-6 lead mb-4" style="line-height: 1.6;">
+                            "{{ item.texto }}"
+                        </p>
+                        
+                        <div class="d-flex align-items-center mt-auto pt-3">
+                            {% if item.foto_url %}
+                                <img src="{{ item.foto_url }}" 
+                                     alt="{{ item.nome }}" 
+                                     class="rounded-circle me-3 object-fit-cover" 
+                                     width="50" height="50">
+                            {% else %}
+                                <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center me-3 font-weight-bold" style="width:50px; height:50px;">
+                                    {{ item.nome|slice:":1"|upper }}
+                                </div>
+                            {% endif %}
+                            <div>
+                                <h6 class="mb-0 fw-bold text-dark">{{ item.nome }}</h6>
+                                <small class="text-muted">{{ item.cargo_subtitulo }}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12 text-center py-5">
+                <p class="text-muted fs-5">Ainda não há histórias cadastradas.</p>
+                {% if user.is_authenticated and user.perfil.tipo == 'VOLUNTARIO' %}
+                    <p class="text-secondary">Seja o primeiro a contar como o voluntariado mudou sua vida!</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

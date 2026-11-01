@@ -1,0 +1,52 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="container my-5" style="max-width: 700px;">
+    <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+        <h2 class="fw-bold text-dark mb-2">Cadastrar Nova Oportunidade</h2>
+        <p class="text-muted mb-4">Preencha os dados da vaga para encontrar novos voluntários.</p>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Título da Vaga</label>
+                <input type="text" name="titulo" class="form-control" value="{{ form.titulo.value|default:'' }}" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Descrição da Atividade</label>
+                <textarea name="descricao" class="form-control" rows="4" required>{{ form.descricao.value|default:'' }}</textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Local (Endereço / Cidade / Estado)</label>
+                <input type="text" name="local" class="form-control" value="{{ form.local.value|default:'' }}" required placeholder="Ex: Rua Vergueiro, 1000 - São Paulo, SP">
+            </div>
+
+            <div class="form-check mb-4">
+                <input type="checkbox" name="urgente" class="form-check-input" id="urgenteCheck" {% if form.urgente.value %}checked{% endif %}>
+                <label class="form-check-label fw-semibold" for="urgenteCheck">Marcar como oportunidade urgente</label>
+            </div>
+
+            {% if form.errors %}
+                <div class="alert alert-danger mb-3">
+                    <strong>Corrija os erros abaixo:</strong>
+                    <ul class="mb-0 mt-1">
+                        {% for field, errors in form.errors.items %}
+                            {% for error in errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-success py-2 px-4 fw-semibold">Salvar Vaga</button>
+                <a href="{% url 'listar_oportunidades' %}" class="btn btn-outline-secondary py-2 px-4">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
