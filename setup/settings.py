@@ -18,14 +18,18 @@ from dotenv import load_dotenv
 # Carrega as variáveis do ficheiro .env
 load_dotenv()
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/6.1/howto/static-files/
 
-# Configuração para arquivos estáticos (CSS, JS, Imagens)
 STATIC_URL = 'static/'
+
 STATICFILES_DIRS = [
     BASE_DIR / 'core' / 'static',
 ]
+
+# ESTA LINHA É OBRIGATÓRIA PARA O RENDER:
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 # Configuração para o WhiteNoise servir os estáticos comprimidos em produção:
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
