@@ -39,36 +39,32 @@
                             <a class="nav-link nav-link-custom {% if request.resolver_match.url_name == 'listar_ongs' %}nav-link-active{% endif %}" href="{% url 'listar_ongs' %}">ONGs</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {% if request.resolver_match.url_name == 'listar_oportunidades' %}active btn btn-success text-white px-3{% endif %}" 
-                            href="{% url 'listar_oportunidades' %}">
-                                Oportunidades
-                            </a>
+                            <a class="nav-link nav-link-custom {% if request.resolver_match.url_name == 'listar_oportunidades' %}nav-link-active{% endif %}" href="{% url 'listar_oportunidades' %}">Oportunidades</a>
                         </li>
-                          <!-- ADICIONAR O LINK DE HISTÓRIAS AQUI -->
                         <li class="nav-item">
-                            <a class="nav-link {% if request.resolver_match.url_name == 'historias' %}active btn btn-success text-white px-3{% endif %}" href="{% url 'historias' %}">Histórias</a>
+                            <a class="nav-link nav-link-custom {% if request.resolver_match.url_name == 'historias' %}nav-link-active{% endif %}" href="{% url 'historias' %}">Histórias</a>
                         </li>  
-
                     </ul>
                 </div>
 
                 <!-- Lado direito da Navbar (Autenticado vs Visitante) -->
                 <div class="d-none d-lg-flex align-items-center gap-3">
                     {% if user.is_authenticated %}
-                        <span class="me-3">Olá, {{ user.username }}!</span>
+                        <span class="me-3">Olá, <strong>{{ user.username }}</strong>!</span>
                         
-                        {% if user.perfil.tipo == 'ONG' %}
+                        <!-- Exibe opções exclusivas para perfil ONG (maiúsculo ou minúsculo) -->
+                        {% if user.perfil.tipo|upper == 'ONG' %}
                             <a href="{% url 'editar_perfil_ong' %}" class="btn btn-outline-secondary btn-sm me-2">Editar Perfil</a>
                             <a href="{% url 'criar_oportunidade' %}" class="btn btn-outline-success btn-sm me-2">+ Nova Vaga</a>
                             <a href="{% url 'minhas_oportunidades' %}" class="btn btn-outline-info btn-sm me-2">Minhas Vagas</a>
                         {% endif %}
 
-                        <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Sair</a>
+                        <a href="{% url 'logout_usuario' %}" class="btn btn-outline-danger btn-sm">Sair</a>
                     
                     {% else %}
-                        <a href="{% url 'login' %}" class="text-decoration-none text-dark fw-medium">Entrar</a>
+                        <a href="{% url 'login_usuario' %}" class="text-decoration-none text-dark fw-medium">Entrar</a>
                         
-                        <!-- Menu suspenso (Dropdown) para escolha de cadastro -->
+                        <!-- Dropdown de Cadastro -->
                         <div class="dropdown">
                             <button class="btn btn-orange dropdown-toggle" type="button" id="dropdownCadastro" data-bs-toggle="dropdown" aria-expanded="false">
                                 Cadastrar-se
@@ -76,7 +72,6 @@
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownCadastro">
                                 <li><a class="dropdown-item" href="{% url 'cadastrar_voluntario' %}"><i class="bi bi-person-heart me-2"></i>Sou Voluntário</a></li>
                                 <li><a class="dropdown-item" href="{% url 'cadastrar_ong' %}"><i class="bi bi-building me-2"></i>Sou uma ONG</a></li>
-                                
                             </ul>
                         </div>
                     {% endif %}

@@ -2,53 +2,37 @@
 
 {% block content %}
 <div class="container my-5">
-    <h2 class="mb-4 text-primary fw-bold">Minhas Oportunidades e Voluntários Inscritos</h2>
+    <h2 class="fw-bold mb-4">Minhas Oportunidades Cadastradas</h2>
 
-    {% for vaga in vagas %}
-        <div class="card shadow-sm mb-4 border-0">
-            <div class="card-header bg-light d-flex justify-content-between align-items-center">
-                <h4 class="m-0 text-dark">{{ vaga.titulo }}</h4>
-                <span class="badge bg-info text-dark">
-                    {{ vaga.inscritos.count }} Voluntário(s) inscrito(s)
-                </span>
-            </div>
-            <div class="card-body">
-                <p class="card-text">{{ vaga.descricao }}</p>
+    <div class="row g-4">
+        {% for vaga in vagas %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm rounded-4 p-3 bg-white">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="fw-bold text-dark">{{ vaga.titulo }}</h5>
+                        <p class="text-muted small flex-grow-1">{{ vaga.descricao }}</p>
+                        <p class="text-muted extra-small mb-2">
+                            <i class="bi bi-geo-alt-fill text-danger me-1"></i>{{ vaga.local }}
+                        </p>
 
-                <h5 class="mt-4 mb-3 text-secondary">Voluntários Inscritos:</h5>
-                {% if vaga.inscritos.all %}
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Nome</th>
-                                    <th>E-mail</th>
-                                    <th>Telefone</th>
-                                    <th>Habilidades</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for voluntario in vaga.inscritos.all %}
-                                    <tr>
-                                        <td><strong>{{ voluntario.username }}</strong></td>
-                                        <td>{{ voluntario.email }}</td>
-                                        <td>{{ voluntario.perfil.telefone|default:"Não informado" }}</td>
-                                        <td>{{ voluntario.perfil.habilidades|default:"Não informado" }}</td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                        <!-- INSERIR O BLOCO DE BOTÕES AQUI -->
+                        <div class="d-flex gap-2 mt-3">
+                            <a href="{% url 'editar_oportunidade' vaga.id %}" class="btn btn-outline-primary btn-sm flex-fill">
+                                <i class="bi bi-pencil me-1"></i>Editar
+                            </a>
+                            <a href="{% url 'deletar_oportunidade' vaga.id %}" class="btn btn-outline-danger btn-sm flex-fill">
+                                <i class="bi bi-trash me-1"></i>Excluir
+                            </a>
+                        </div>
+
                     </div>
-                {% else %}
-                    <p class="text-muted fst-italic">Ainda não há voluntários inscritos nesta vaga.</p>
-                {% endif %}
+                </div>
             </div>
-        </div>
-    {% empty %}
-        <div class="alert alert-info">
-            Você ainda não cadastrou nenhuma oportunidade. 
-            <a href="{% url 'criar_oportunidade' %}" class="alert-link">Clique aqui para criar uma.</a>
-        </div>
-    {% endfor %}
+        {% empty %}
+            <div class="col-12 text-center py-5">
+                <p class="text-muted fs-5">Você ainda não cadastrou nenhuma vaga.</p>
+            </div>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}
