@@ -36,9 +36,10 @@
                             <label class="form-label fw-semibold">Subtítulo / Tempo de Voluntariado</label>
                             {{ form.cargo_subtitulo }}
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">URL da sua Foto (opcional)</label>
-                            {{ form.foto_url }}
+
+                        {# AVISO INFORMATIVO EM VEZ DO CAMPO MANUAL DE URL #}
+                        <div class="alert alert-light border d-flex align-items-center gap-2 mt-3">
+                            <small class="text-muted">Sua foto de perfil cadastrada será associada automaticamente a este depoimento.</small>
                         </div>
                     </div>
                     <div class="modal-footer border-0">
@@ -62,13 +63,14 @@
                         </p>
                         
                         <div class="d-flex align-items-center mt-auto pt-3">
+                            {# CHECAGEM DE TRATAMENTO DA FOTO #}
                             {% if item.foto_url %}
                                 <img src="{{ item.foto_url }}" 
                                      alt="{{ item.nome }}" 
-                                     class="rounded-circle me-3 object-fit-cover" 
-                                     width="50" height="50">
+                                     class="rounded-circle me-3" 
+                                     style="width: 50px; height: 50px; object-fit: cover;">
                             {% else %}
-                                <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center me-3 font-weight-bold" style="width:50px; height:50px;">
+                                <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center me-3 fw-bold" style="width: 50px; height: 50px;">
                                     {{ item.nome|slice:":1"|upper }}
                                 </div>
                             {% endif %}
