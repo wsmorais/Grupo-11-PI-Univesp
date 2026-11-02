@@ -72,7 +72,7 @@ class OportunidadeForm(forms.ModelForm):
 class DepoimentoForm(forms.ModelForm):
     class Meta:
         model = Depoimento
-        fields = ['texto', 'cargo_subtitulo', 'foto_url']
+        fields = ['texto', 'cargo_subtitulo']  # 'foto_url' removido daqui
         widgets = {
             'texto': forms.Textarea(attrs={
                 'class': 'form-control',
@@ -82,9 +82,5 @@ class DepoimentoForm(forms.ModelForm):
             'cargo_subtitulo': forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Ex: Voluntário há 2 anos'
-            }),
-            'foto_url': forms.URLInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'URL da foto (opcional)'
             }),
         }
