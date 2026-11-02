@@ -50,7 +50,9 @@
                 <!-- Lado direito da Navbar (Autenticado vs Visitante) -->
                 <div class="d-none d-lg-flex align-items-center gap-3">
                     {% if user.is_authenticated %}
-                        <span class="me-3">Olá, <strong>{{ user.username }}</strong>!</span>
+                        <span class="me-2 text-dark font-weight-bold">
+                            Olá, {{ user.first_name|default:user.username }}!
+                        </span>
                         
                         {% if user.perfil.tipo|upper == 'ONG' %}
                             <!-- Opções exclusivas para Perfil ONG -->
